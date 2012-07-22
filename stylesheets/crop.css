@@ -1,0 +1,11 @@
+.cropper {
+    opacity: .4;
+    background: #222;
+    border: 2px solid #000;
+}
+
+.croppable-container {
+    border: 2px solid #333;   
+}
+
+​

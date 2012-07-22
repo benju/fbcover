@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+	<head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+	   <meta charset="utf-8" />
+
+		<title>
+			Joe's Web Garage
+		</title>
+<link rel="stylesheet" href="/stylesheets/crop.css" type="text/css">
+</head>
+<body>
+<script>
+(function($) {
+    $.fn.croppable = function(settings) {
+        settings = settings || {
+            square: 50,
+        default:
+            'middle',
+            id: $(this).data("id"),
+            success: null
+        };
+
+        var position = {
+            x: settings.
+        default == 'middle' ? ($(this).width() / 2) - (settings.square / 2):
+            0,
+            y: settings.
+        default == 'middle' ? ($(this).height() / 2) - (settings.square / 2):
+            0
+        };
+
+        $(this).wrap("<div class='croppable-container' style='position: relative;' />");
+
+        var cropper = $("<div style='position: absolute; top: " + position.y + "px; left: " + position.x + "px; height: " + settings.square + "px; width: " + settings.square + "px;' class='cropper' />");
+        $(this).before(cropper);
+
+        var save = $("<input type='button' value='Crop Selection'/>");
+        save.click(function() {
+            $.post("/your/service/location", {
+                img: id,
+                x: cropper.position().left,
+                y: cropper.position().top,
+                height: settings.square
+            }, function(data) {
+                if (settings.success != null) {
+                    settings.success(data);
+                }
+            });
+        });
+
+        $(this).parent().width($(this).width());
+        $(this).parent().height($(this).height());
+        cropper.draggable({
+            containment: "parent"
+        });
+
+        $(this).parent().after(save);
+    };
+})(jQuery);
+
+$(".croppable").croppable();​
+</script>
+	<img class="croppable" src="http://blog.internetnews.com/skerner/smk/testpilot.png"/>
+
+</body>
+</html>
+
