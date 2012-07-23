@@ -13,21 +13,26 @@
 <body>
 <div class="wrapper">	
 <div id="header" >
-<h1> Fetch You Cover !</h1>
+<h2> Facebook Cover Generator </h2>
 </div>
 <center>
 <div id="form">    
     <form action="/fb" method="get" >
-      <div id="label"> <input type="text" name="link" width="500px"> </div>
+      <div id="label"> <input type="text" name="link" width="500px" style="width:500px" placeholder="Your Fb Profile Link..."> </div>
       <div id="submit"><input type="submit" value="Gegenerate Cover" ></div>
     </form>
 </div>
 
 </center>
+
+<br>
+<center><h2>(OR)</h2></center>
+<br>
+
 <center>
 <div id="form">    
     <form action="/img" enctype="multipart/form-data"  method="post" >
-      <div id="label"> <input type="file" name="img"> </div>
+      <div id="label"> <input type="file" name="img" > </div>
       <div id="submit"><input type="submit" value="Go Croppy!" ></div>
     </form>
 </div>

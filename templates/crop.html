@@ -1,69 +1,63 @@
 <!Doctype html>
 <html>
-	<head>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+<head>
 
 
-	   <meta charset="utf-8" />
+<meta charset="utf-8" />
 
-		<title>
-			Joe's Web Garage
-		</title>
+<title>
+	Joe's Web Garage
+</title>
 <link rel="stylesheet" href="/stylesheets/crop.css" type="text/css">
+<script src="/stylesheets/js/jquery.min.js"></script>
+<script src="/stylesheets/js/jquery.Jcrop.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/css/jquery.Jcrop.css" type="text/css" />
 </head>
 <body>
-<script>
-(function($) {
-    $.fn.croppable = function(settings) {
-        settings = settings || {
-            square: 50,
-        default:
-            'middle',
-            id: $(this).data("id"),
-            success: null
-        };
+<script language="Javascript">
+	jQuery(document).ready(function(){
 
-        var position = {
-            x: settings.
-        default == 'middle' ? ($(this).width() / 2) - (settings.square / 2):
-            0,
-            y: settings.
-        default == 'middle' ? ($(this).height() / 2) - (settings.square / 2):
-            0
-        };
+	jQuery('#target').Jcrop({
+			onChange: showCoords,
+			onSelect: showCoords,
+                        minSize: [270, 200],
+                        setSelect: [292, 42, 562, 242],
+			aspectRatio: 1.35  
+			});
 
-        $(this).wrap("<div class='croppable-container' style='position: relative;' />");
+			});
 
-        var cropper = $("<div style='position: absolute; top: " + position.y + "px; left: " + position.x + "px; height: " + settings.square + "px; width: " + settings.square + "px;' class='cropper' />");
-        $(this).before(cropper);
-
-        var save = $("<input type='button' value='Crop Selection'/>");
-        save.click(function() {
-            $.post("/your/service/location", {
-                img: id,
-                x: cropper.position().left,
-                y: cropper.position().top,
-                height: settings.square
-            }, function(data) {
-                if (settings.success != null) {
-                    settings.success(data);
-                }
-            });
-        });
-
-        $(this).parent().width($(this).width());
-        $(this).parent().height($(this).height());
-        cropper.draggable({
-            containment: "parent"
-        });
-
-        $(this).parent().after(save);
-    };
-})(jQuery);
-
-$(".croppable").croppable();​
+			// Simple event handler, called from onChange and onSelect
+			// event handlers, as per the Jcrop invocation above
+	function showCoords(c)
+		{
+			jQuery('#x1').val(c.x);
+			jQuery('#y1').val(c.y);
+			jQuery('#x2').val(c.x2);
+			jQuery('#y2').val(c.y2);
+			jQuery('#w').val(c.w);
+			jQuery('#h').val(c.h);
+		};
 </script>
-	<img class="croppable" src="http://blog.internetnews.com/skerner/smk/testpilot.png"/>
+
+<div style="display:block;">			
+    <form id="coords"
+      class="coords"
+      action="/generate"
+      method="post" >
+
+      <div>
+      <label>X1 <input type="text" size="4" id="x1" name="x1" /></label>
+      <label>Y1 <input type="text" size="4" id="y1" name="y1" /></label>
+      <label>X2 <input type="text" size="4" id="x2" name="x2" /></label>
+      <label>Y2 <input type="text" size="4" id="y2" name="y2" /></label>
+      <label>W <input type="text" size="4" id="w" name="w" /></label>
+      <label>H <input type="text" size="4" id="h" name="h" /></label>
+      <input type="submit" value="Crop Me"> 
+   </form>
+</div>
+
+<img id="target" src="/image"/>
 
 </body>
 </html>
