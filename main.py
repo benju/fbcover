@@ -25,6 +25,8 @@ from google.appengine.ext import db
 #from google.appengine.api import users
 from google.appengine.api import images
 from google.appengine.ext.webapp import template
+from google.appengine.api import urlfetch
+
 from PIL import Image
 from PIL import ImageEnhance
 import cStringIO
@@ -70,35 +72,55 @@ class ImageSh(webapp2.RequestHandler):
 
 #logging.info("after ad outside class:" +pic.getvalue()[:10])
 
-class Fboutput(webapp2.RequestHandler):
-  def get(self):
-    fblink = str(self.request.get('link'))
-    con = urllib2.urlopen(fblink)
-    html = con.read()
-    soup = BeautifulSoup(html)
-    code = soup.find('code')
-    #Let the hacking begin....
-    string = str(code)
-    hackedhtml = re.sub('<!--', ' ', string)
-    soup = BeautifulSoup(hackedhtml)
-    url = soup.find('img', style="top:0px;width:100%;").attrs['src'] 
-    fil=urllib2.urlopen(url)
-    im = cStringIO.StringIO(fil.read())
-    userpic = Image.open(im)
-    bright = ImageEnhance.Brightness(userpic).enhance(1.5)
-    colored = ImageEnhance.Color(bright).enhance(0.4)
-    blurred = ImageEnhance.Sharpness(colored).enhance(-0.5)
-    path = os.path.join(os.path.dirname(__file__), 'transparent.png')
-    #file2 = urllib2.urlopen("http://joelevis.files.wordpress.com/2012/07/transparent.png")
-    #img = cStringIO.StringIO(file2.read())
-    poster = Image.open(path)
-    blurred.paste(poster, (0,0), poster )
-    out = StringIO.StringIO()
-    blurred.save(out, "JPEG")
-    contents = out.getvalue()
-    out.close()
-    self.response.headers['Content-Type']="image/jpeg"
-    self.response.out.write(contents)
+#class Fboutput(webapp2.RequestHandler):
+#  def get(self):
+#    status=1
+#    fblink = str(self.request.get('link'))
+#    conn = urlfetch.fetch(fblink)
+#    if conn.status_code == 200: 
+#      html = conn.content
+#      soup = BeautifulSoup(html)
+#      code = soup.find('code')
+#    #Let the hacking begin....
+#      string = str(code)
+#      hackedhtml = re.sub('<!--', ' ', string)
+#      soup = BeautifulSoup(hackedhtml)
+#      url = soup.find('img')
+#      if(url == None):
+#        global status
+#        status = 1
+#      if(status==1):
+#        try:
+#          coverurl = url.attrs['src'] 
+#        except:
+#         status=0
+#        if(status=1): 
+#          fil=urllib2.urlopen(coverurl)
+#          im = cStringIO.StringIO(fil.read())
+#          userpic = Image.open(im)
+#          bright = ImageEnhance.Brightness(userpic).enhance(1.5)
+#          colored = ImageEnhance.Color(bright).enhance(0.4)
+#          blurred = ImageEnhance.Sharpness(colored).enhance(-0.5)
+#          path = os.path.join(os.path.dirname(__file__), 'transparent.png')
+#          #file2 = urllib2.urlopen("http://joelevis.files.wordpress.com/2012/07/transparent.png")
+#          #img = cStringIO.StringIO(file2.read())
+#          poster = Image.open(path)
+#          blurred.paste(poster, (0,0), poster )
+#          out = StringIO.StringIO()
+#          blurred.save(out, "JPEG")
+#          contents = out.getvalue()
+#          out.close()
+#          self.response.headers['Content-Type']="image/jpeg"
+#          self.response.out.write(contents)
+#      else:
+#        template_values = {}
+#        path = os.path.join(os.path.dirname(__file__), 'templates/geterror.html')
+#        self.response.out.write(template.render(path, template_values)) 
+
+#    else:
+#      template_values = {}
+#      path = os.path.join(os.path.dirname(__file__), 'templates/linkerror.html')
+#      self.response.out.write(template.render(path, template_values)) 
 
 class DisplayHandler(webapp2.RequestHandler):
   def get(self):  
@@ -149,7 +171,7 @@ class Imoutput(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
   ('/', MainPage),
-  ('/fb', Fboutput),
+#  ('/fb', Fboutput),
   ('/img', ImageSh),
   ('/image', DisplayHandler),
   ('/generate', Imoutput)

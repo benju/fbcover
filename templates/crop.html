@@ -12,6 +12,28 @@
 <script src="/stylesheets/js/jquery.min.js"></script>
 <script src="/stylesheets/js/jquery.Jcrop.min.js"></script>
 <link rel="stylesheet" href="/stylesheets/css/jquery.Jcrop.css" type="text/css" />
+<style>
+
+#crop {
+    display: block;
+    width:200px;
+    border:2px solid #dadada;
+    border-radius:7px;
+    font-size:20px;
+    padding:5px;
+    margin: 10px;
+    margin-top:10px;
+        
+}
+
+
+#crop:focus { 
+    outline:none;
+    border-color:#9ecaed;
+    box-shadow:0 0 10px #9ecaed;
+}​
+
+</style>
 </head>
 <body>
 <script language="Javascript">
@@ -53,12 +75,14 @@
       <label>Y2 <input type="text" size="4" id="y2" name="y2" /></label>
       <label>W <input type="text" size="4" id="w" name="w" /></label>
       <label>H <input type="text" size="4" id="h" name="h" /></label>
-      <input type="submit" value="Crop Me"> 
+      
+   
+
+
+     <img id="target" src="/image"/>
+     <input type="submit" value="Crop Me" id="crop"> 
    </form>
 </div>
-
-<img id="target" src="/image"/>
-
 </body>
 </html>
 
